@@ -1,0 +1,4 @@
+pytest
+requests
+pymongo
+pytest-mock
