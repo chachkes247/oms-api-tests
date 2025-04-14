@@ -9,6 +9,7 @@ services:
       - mongo
     volumes:
       - ./app:/app
+      - ./tests:/tests
     environment:
       - MONGO_URI=mongodb://mongo:27017
 
