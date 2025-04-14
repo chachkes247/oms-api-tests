@@ -1,17 +1,14 @@
 import pytest
-from unittest.mock import MagicMock
+from pymongo import MongoClient
 
-
-@pytest.fixture
+@pytest.fixture(scope="session")
 def base_url():
-    return "http://localhost:8000"
-
+    return "http://api:8000"  # or whatever your API service is named in docker-compose.yml
 
 @pytest.fixture
 def auth_headers():
     token = "mock-jwt-token"
     return {"Authorization": f"Bearer {token}"}
-
 
 @pytest.fixture
 def test_order():
@@ -19,19 +16,16 @@ def test_order():
         "user_id": "u_test_123",
         "items": [{
             "product_id": "p100",
-             "name": "Test Product",
-             "price": 100,
-             "quantity": 2
-            }
-        ],
+            "name": "Test Product",
+            "price": 100,
+            "quantity": 2
+        }],
         "total_price": 200,
         "status": "Pending"
     }
 
-
-@pytest.fixture
+@pytest.fixture(scope="session")
 def mongo_client():
-    return MagicMock()
-
-
-
+    client = MongoClient("mongodb://mongo:27017")  # assumes mongo container is named "mongo"
+    yield client
+    client.close()
