@@ -8,7 +8,7 @@ jobs:
 
     services:
       mongo:
-        image: mongo:6.0
+        image: mongo:latest  # Aligning with the Docker Compose version
         ports:
           - 27017:27017
         options: >-
@@ -31,11 +31,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set environment variable for MongoDB
+        run: echo "MONGO_URI=mongodb://localhost:27017" >> $GITHUB_ENV
+
       - name: Run tests
         run: pytest --junitxml=results.xml
 
+      # Uncomment this if you need to upload test results
       # - name: Upload test results
-      #   uses: actions/upload-artifact@v2  # <- fallback to v2
+      #   uses: actions/upload-artifact@v2
       #   with:
       #     name: test-results
       #     path: results.xml
