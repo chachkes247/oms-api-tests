@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.10'
 
 services:
   fastapi:
@@ -14,7 +14,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017
 
   mongo:
-    image: mongo:latest
+    image: mongo:6.0
     ports:
       - "27017:27017"
     volumes:
