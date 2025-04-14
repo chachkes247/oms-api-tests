@@ -1,41 +1,34 @@
-from pymongo import MongoClient
 import pytest
 import requests
 
 def test_mongo_insert(mongo_client):
-    client = mongo_client
-    db = client.test_db
+    db = mongo_client.test_db
     collection = db.test_collection
     result = collection.insert_one({"name": "test"})
     assert result.inserted_id is not None
 
 
 def test_mongo_query(mongo_client):
-    client = mongo_client
-    db = client.test_db
+    db = mongo_client.test_db
     collection = db.test_collection
     result = collection.find_one({"name": "test"})
     assert result is not None
-    
-    
+
+
 def test_create_order(base_url, auth_headers, test_order, mongo_client):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
     assert response.status_code == 201
-    data = response.json()
-    order_id = data["_id"]
+    order_id = response.json()["_id"]
 
-    # Validate in MongoDB
     db_order = mongo_client["oms"]["orders"].find_one({"_id": order_id})
     assert db_order is not None
     assert db_order["status"] == "Pending"
 
 
 def test_get_order(base_url, auth_headers, test_order, mongo_client):
-    # First, create the order
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
     order_id = response.json()["_id"]
 
-    # Now, fetch it
     get_response = requests.get(f"{base_url}/orders/{order_id}", headers=auth_headers)
     assert get_response.status_code == 200
     assert get_response.json()["_id"] == order_id
