@@ -8,9 +8,9 @@ jobs:
 
     services:
       mongo:
-        image: mongo:latest  # Aligning with the Docker Compose version
+        image: mongo:latest  # MongoDB container
         ports:
-          - 27017:27017
+          - 27017:27017     # Expose port 27017
         options: >-
           --health-cmd="mongo --eval 'db.runCommand({ ping: 1 })'"
           --health-interval=10s
@@ -36,10 +36,3 @@ jobs:
 
       - name: Run tests
         run: pytest --junitxml=results.xml
-
-      # Uncomment this if you need to upload test results
-      # - name: Upload test results
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: test-results
-      #     path: results.xml
