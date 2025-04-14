@@ -46,12 +46,12 @@ jobs:
         run: |
           pytest -sv tests/ --junitxml=results.xml
       
-      - name: Commit and push results to the repository
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git add results.xml
-          git commit -m "Add test results"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Commit and push results to the repository
+      #   run: |
+      #     git config --global user.name "github-actions"
+      #     git config --global user.email "github-actions@github.com"
+      #     git add results.xml
+      #     git commit -m "Add test results"
+      #     git push
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
