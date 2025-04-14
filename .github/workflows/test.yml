@@ -47,7 +47,7 @@ jobs:
           pytest -sv tests/ --junitxml=results.xml
       
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@latest
         with:
           name: test-results
           path: results.xml
