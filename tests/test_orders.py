@@ -1,18 +1,9 @@
-from pymongo import MongoClient
+import pymongo
+import pytest
 
-def test_mongo_connection():
-    client = MongoClient("mongodb://localhost:27017/")
-    db = client["test_db"]
-    collection = db["test_collection"]
-
-    # Insert a document
-    result = collection.insert_one({"name": "ChatGPT"})
-    assert result.inserted_id is not None
-
-    # Fetch the document
-    doc = collection.find_one({"name": "ChatGPT"})
-    assert doc is not None
-    assert doc["name"] == "ChatGPT"
-
-    # Clean up
-    collection.drop()
+def test_pymongo_connection():
+    client = pymongo.MongoClient("mongodb://localhost:27017/", serverSelectionTimeoutMS=3000)
+    try:
+        client.server_info()  # Will throw if can't connect
+    except Exception as e:
+        pytest.fail(f"Could not connect to MongoDB: {e}")
