@@ -3,7 +3,7 @@ from pymongo import MongoClient
 
 @pytest.fixture(scope="session")
 def base_url():
-    return "http://api:8000"  # or whatever your API service is named in docker-compose.yml
+    return "http://api:8000"  
 
 @pytest.fixture
 def auth_headers():
