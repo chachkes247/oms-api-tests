@@ -1,4 +1,4 @@
-name: tackle mongo issue
+name: Run Tests
 
 on:
   push:
@@ -18,9 +18,9 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --health-cmd='curl --silent --fail mongodb://localhost:27017' 
-          --health-interval=5s 
-          --health-timeout=3s 
+          --health-cmd='curl --fail mongodb://localhost:27017'
+          --health-interval=5s
+          --health-timeout=3s
           --health-retries=5
 
     steps:
