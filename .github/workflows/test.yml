@@ -40,7 +40,7 @@ jobs:
           echo "API failed to start in time." && exit 1
 
       
-          - name: Shut down Docker Compose
+      - name: Shut down Docker Compose
         run: docker compose -f docker-compose.yml down -v
 
       # - name: Set up Python
