@@ -1,23 +1,26 @@
-import pytest
+import time
 import requests
 
-import time
-
-def wait_for_api(url, timeout=30):
-    for _ in range(timeout):
+def wait_for_api(max_attempts=10, delay=2):
+    for i in range(max_attempts):
         try:
-            r = requests.get(url)
-            if r.status_code == 200:
-                return r
-        except requests.ConnectionError:
-            time.sleep(1)
-    raise RuntimeError(f"API not available at {url}")
+            response = requests.get("http://api:8000/health")
+            if response.status_code == 200:
+                print("API is ready!")
+                return
+        except requests.exceptions.ConnectionError:
+            pass
+        print(f"Waiting for API... attempt {i + 1}")
+        time.sleep(delay)
+    raise Exception("API failed to become ready in time.")
 
 def test_health_check():
+    wait_for_api()
     response = requests.get("http://api:8000/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
-
+    
+    
 # def test_mongo_insert(mongo_client):
 #     db = mongo_client.test_db
 #     collection = db.test_collection
