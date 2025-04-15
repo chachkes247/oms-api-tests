@@ -34,8 +34,9 @@ services:
     command: >
       bash -c "
         pwd
+        echo pwd
+        echo
         ls
-        ls tests/
       "
     # command: >
     #   bash -c "
