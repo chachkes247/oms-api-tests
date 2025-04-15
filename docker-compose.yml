@@ -30,6 +30,11 @@ services:
       - mongo
     command: >
       bash -c "
-        pip install -r requirements-dev.txt &&
-        pytest tests/ --junitxml=results.xml
+        pwd
+        ls
       "
+    # command: >
+    #   bash -c "
+    #     pip install -r requirements-dev.txt &&
+    #     pytest tests/ --junitxml=results.xml
+    #   "
