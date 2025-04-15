@@ -32,13 +32,6 @@ services:
       - ./app:/app
       - ./tests:/tests
       - ./results:/shared
-    # command: >
-    #   bash -c "
-    #     pwd
-    #     echo pwd
-    #     echo
-    #     ls
-    #   "
     command: >
       bash -c "
         pytest -sv /tests --junitxml=/shared/results.xml
