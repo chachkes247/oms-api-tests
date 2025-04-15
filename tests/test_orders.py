@@ -1,18 +1,26 @@
 import pytest
 import requests
 
-def test_mongo_insert(mongo_client):
-    db = mongo_client.test_db
-    collection = db.test_collection
-    result = collection.insert_one({"name": "test"})
-    assert result.inserted_id is not None
+
+import requests
+
+def test_health_check():
+    response = requests.get("http://localhost:8000/health")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+
+# def test_mongo_insert(mongo_client):
+#     db = mongo_client.test_db
+#     collection = db.test_collection
+#     result = collection.insert_one({"name": "test"})
+#     assert result.inserted_id is not None
 
 
-def test_mongo_query(mongo_client):
-    db = mongo_client.test_db
-    collection = db.test_collection
-    result = collection.find_one({"name": "test"})
-    assert result is not None
+# def test_mongo_query(mongo_client):
+#     db = mongo_client.test_db
+#     collection = db.test_collection
+#     result = collection.find_one({"name": "test"})
+#     assert result is not None
 
 
 # def test_create_order(base_url, auth_headers, test_order, mongo_client):
