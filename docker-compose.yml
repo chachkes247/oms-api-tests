@@ -32,6 +32,7 @@ services:
       bash -c "
         pwd
         ls
+        ls tests/
       "
     # command: >
     #   bash -c "
