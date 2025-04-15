@@ -26,6 +26,15 @@ jobs:
 
       - name: Set up Docker Compose
         run: docker compose -f docker-compose.yml up --build -d
+      
+      - name: Wait for FastAPI to be ready
+        run: |
+          for i in {1..10}; do
+            curl -s http://localhost:8000/health && echo "API is up!" && exit 0
+            echo "Waiting for API..."
+            sleep 2
+          done
+          echo "API failed to start in time." && exit 1
 
       - name: Shut down Docker Compose
         run: docker compose -f docker-compose.yml down -v
