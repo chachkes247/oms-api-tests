@@ -8,6 +8,7 @@ from pymongo import MongoClient
 def base_url():
     return os.getenv("API_URL", "http://api:80")
 
+
 @pytest.fixture(scope="session", autouse=True)
 def wait_for_api(base_url):
     max_attempts = 10
@@ -25,12 +26,12 @@ def wait_for_api(base_url):
     raise Exception("API failed to become ready in time.")
 
 
-
-
 @pytest.fixture
 def auth_headers():
-    token = "mock-jwt-token"
+    # token = "mock-jwt-token"
+    token = "test-token"
     return {"Authorization": f"Bearer {token}"}
+
 
 @pytest.fixture
 def test_order():
@@ -46,8 +47,18 @@ def test_order():
         "status": "Pending"
     }
 
+
 @pytest.fixture(scope="session")
 def mongo_client():
-    client = MongoClient("mongodb://mongo:27017")  # assumes mongo container is named "mongo"
+    mongo_uri = os.getenv("MONGO_URI", "mongodb://mongo:27017")
+    client = MongoClient(mongo_uri)
     yield client
     client.close()
+    
+
+@pytest.fixture
+def clean_orders_collection(mongo_client):
+    db = mongo_client["oms"]
+    db["orders"].delete_many({})
+    yield
+    db["orders"].delete_many({})

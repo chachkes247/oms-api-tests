@@ -20,14 +20,14 @@ def test_health_check(base_url):
 #     assert result is not None
 
 
-# def test_create_order(base_url, auth_headers, test_order, mongo_client):
-#     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
-#     assert response.status_code == 201
-#     order_id = response.json()["_id"]
+def test_create_order(base_url, auth_headers, test_order, mongo_client):
+    response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
+    assert response.status_code == 201
+    order_id = response.json()["_id"]
 
-#     db_order = mongo_client["oms"]["orders"].find_one({"_id": order_id})
-#     assert db_order is not None
-#     assert db_order["status"] == "Pending"
+    db_order = mongo_client["oms"]["orders"].find_one({"_id": order_id})
+    assert db_order is not None
+    assert db_order["status"] == "Pending"
 
 
 # def test_get_order(base_url, auth_headers, test_order, mongo_client):
