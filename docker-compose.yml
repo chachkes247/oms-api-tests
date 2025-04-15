@@ -31,15 +31,14 @@ services:
     volumes:
       - ./app:/app
       - ./tests:/tests
-    command: >
-      bash -c "
-        pwd
-        echo pwd
-        echo
-        ls
-      "
     # command: >
     #   bash -c "
-    #     pip install -r requirements-dev.txt &&
-    #     pytest tests/ --junitxml=results.xml
+    #     pwd
+    #     echo pwd
+    #     echo
+    #     ls
     #   "
+    command: >
+      bash -c "
+        pytest tests/ --junitxml=results.xml
+      "
