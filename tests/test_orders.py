@@ -1,6 +1,17 @@
 import pytest
 import requests
 
+import time
+
+def wait_for_api(url, timeout=30):
+    for _ in range(timeout):
+        try:
+            r = requests.get(url)
+            if r.status_code == 200:
+                return r
+        except requests.ConnectionError:
+            time.sleep(1)
+    raise RuntimeError(f"API not available at {url}")
 
 def test_health_check():
     response = requests.get("http://api:8000/health")
