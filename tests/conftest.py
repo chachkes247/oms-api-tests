@@ -1,9 +1,12 @@
 import pytest
+import os
 from pymongo import MongoClient
 
 @pytest.fixture(scope="session")
 def base_url():
-    return "http://api:8000"  
+    # return "http://api:8000" #locally
+    return os.getenv("API_URL", "http://api:80")
+
 
 @pytest.fixture
 def auth_headers():
