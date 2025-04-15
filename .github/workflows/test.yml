@@ -24,15 +24,11 @@ jobs:
       - name: Run tests via Docker Compose
         run: docker compose -f docker-compose.yml run --rm test
         
+      - name: Upload test report
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: results.xml
+
       - name: Shut down Docker Compose
         run: docker compose -f docker-compose.yml down -v
-
-      # - name: Commit and push results to the repository
-      #   run: |
-      #     git config --global user.name "github-actions"
-      #     git config --global user.email "github-actions@github.com"
-      #     git add results.xml
-      #     git commit -m "Add test results"
-      #     git push
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
