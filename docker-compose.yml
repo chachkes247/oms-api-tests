@@ -28,6 +28,9 @@ services:
     depends_on:
       - api
       - mongo
+    volumes:
+      - ./app:/app
+      - ./tests:/tests
     command: >
       bash -c "
         pwd
