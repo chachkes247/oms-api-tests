@@ -40,5 +40,5 @@ services:
     #   "
     command: >
       bash -c "
-        pytest tests/ --junitxml=results.xml
+        pytest /tests --junitxml=/results.xml
       "
