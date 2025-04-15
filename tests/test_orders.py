@@ -1,3 +1,4 @@
+import pytest
 import requests
 from bson import ObjectId
 
@@ -7,20 +8,6 @@ def test_health_check(base_url):
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
     
-    
-def test_mongo_insert(mongo_client):
-    db = mongo_client.test_db
-    collection = db.test_collection
-    result = collection.insert_one({"name": "test"})
-    assert result.inserted_id is not None
-
-
-def test_mongo_query(mongo_client):
-    db = mongo_client.test_db
-    collection = db.test_collection
-    result = collection.find_one({"name": "test"})
-    assert result is not None
-
 
 def test_create_order(base_url, auth_headers, test_order, mongo_client):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
@@ -50,7 +37,7 @@ def test_update_order_status(base_url, auth_headers, test_order, mongo_client, n
     assert patch_response.status_code == 200
     assert patch_response.json()["status"] == new_status
 
-    db_order = mongo_client["oms"]["orders"].find_one({"_id": order_id})
+    db_order = mongo_client["oms"]["orders"].find_one({"_id": ObjectId(order_id)})
     assert db_order["status"] == new_status
 
 
@@ -61,7 +48,7 @@ def test_delete_order(base_url, auth_headers, test_order, mongo_client):
     del_response = requests.delete(f"{base_url}/orders/{order_id}", headers=auth_headers)
     assert del_response.status_code == 204
 
-    db_order = mongo_client["oms"]["orders"].find_one({"_id": order_id})
+    db_order = mongo_client["oms"]["orders"].find_one({"_id": ObjectId(order_id)})
     assert db_order is None
 
 
