@@ -24,6 +24,12 @@ jobs:
       - name: Run tests via Docker Compose
         run: docker compose -f docker-compose.yml run --rm test
         
+      - name: Check test report exists
+        run: ls -l results
+      
+      - name: Check test report exists
+        run: ls -l shared
+      
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
