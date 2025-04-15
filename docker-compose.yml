@@ -9,22 +9,27 @@ services:
       - "8000:80"
     depends_on:
       - mongo
-    # volumes:
-    #   - ./app:/app
     environment:
       - MONGO_URI=mongodb://mongo:27017
-    # networks:
-    #   - oms-net
+
 
 
   mongo:
     image: mongo:6.0
     ports:
       - "27017:27017"
-    # volumes:
-    #   - ./data:/data/db
-    # networks:
-    #   - oms-net
 
-# networks:
-#   oms-net:
+
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+      - mongo
+    command: >
+      bash -c "
+        pip install -r requirements-dev.txt &&
+        pytest tests/ --junitxml=results.xml
+      "
