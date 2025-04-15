@@ -15,7 +15,7 @@ def wait_for_api(base_url, max_attempts=10, delay=2):
     raise Exception("API failed to become ready in time.")
 
 def test_health_check(base_url):
-    wait_for_api()
+    wait_for_api(base_url)
     response = requests.get(f"{base_url}/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
