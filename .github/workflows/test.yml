@@ -26,7 +26,10 @@ jobs:
 
       - name: Set up Docker Compose
         run: docker compose -f docker-compose.yml up --build -d
-      
+     
+      - name: Run tests via Docker Compose
+        run: docker compose -f docker-compose.yml run --rm test
+        
       - name: Wait for FastAPI to be ready
         run: |
           for i in {1..10}; do
@@ -36,7 +39,8 @@ jobs:
           done
           echo "API failed to start in time." && exit 1
 
-      - name: Shut down Docker Compose
+      
+          - name: Shut down Docker Compose
         run: docker compose -f docker-compose.yml down -v
 
       # - name: Set up Python
