@@ -1,21 +1,6 @@
-import time
 import requests
 
-def wait_for_api(base_url, max_attempts=10, delay=2):
-    for i in range(max_attempts):
-        try:
-            response = requests.get(f"{base_url}/health")
-            if response.status_code == 200:
-                print("API is ready!")
-                return
-        except requests.exceptions.ConnectionError:
-            pass
-        print(f"Waiting for API... attempt {i + 1}")
-        time.sleep(delay)
-    raise Exception("API failed to become ready in time.")
-
 def test_health_check(base_url):
-    wait_for_api(base_url)
     response = requests.get(f"{base_url}/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}

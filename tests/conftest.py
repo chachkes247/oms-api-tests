@@ -1,11 +1,30 @@
-import pytest
 import os
+import time
+import pytest
+import requests
 from pymongo import MongoClient
 
 @pytest.fixture(scope="session")
 def base_url():
-    # return "http://api:8000" #locally
     return os.getenv("API_URL", "http://api:80")
+
+@pytest.fixture(scope="session", autouse=True)
+def wait_for_api(base_url):
+    max_attempts = 10
+    delay = 2
+    for i in range(max_attempts):
+        try:
+            response = requests.get(f"{base_url}/health")
+            if response.status_code == 200:
+                print("API is ready!")
+                return
+        except requests.exceptions.ConnectionError:
+            pass
+        print(f"Waiting for API... attempt {i + 1}")
+        time.sleep(delay)
+    raise Exception("API failed to become ready in time.")
+
+
 
 
 @pytest.fixture
