@@ -31,6 +31,7 @@ services:
     volumes:
       - ./app:/app
       - ./tests:/tests
+      - ./results:/shared
     # command: >
     #   bash -c "
     #     pwd
@@ -40,5 +41,5 @@ services:
     #   "
     command: >
       bash -c "
-        pytest -sv /tests --junitxml=/results.xml
+        pytest -sv /tests --junitxml=/shared/results.xml
       "
