@@ -1,21 +1,30 @@
-version: '3.10'
+version: '3.9'
 
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:80"
     depends_on:
       - mongo
-    volumes:
-      - ./app:/app
- 
+    # volumes:
+    #   - ./app:/app
     environment:
       - MONGO_URI=mongodb://mongo:27017
+    # networks:
+    #   - oms-net
+
 
   mongo:
-    image: mongo
+    image: mongo:6.0
     ports:
       - "27017:27017"
-    volumes:
-      - ./data:/data/db
+    # volumes:
+    #   - ./data:/data/db
+    # networks:
+    #   - oms-net
+
+# networks:
+#   oms-net:
