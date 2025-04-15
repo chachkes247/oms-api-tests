@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-report
-          path: results/results.xml
+          path: shared/results.xml
 
       - name: Shut down Docker Compose
         run: docker compose -f docker-compose.yml down -v
