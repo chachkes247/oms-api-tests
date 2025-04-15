@@ -21,9 +21,14 @@ def test_create_order(base_url, auth_headers, test_order, mongo_client):
 
 def test_get_order(base_url, auth_headers, test_order, mongo_client):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
+    print("CREATE STATUS:", response.status_code)
+    print("CREATE BODY:", response.json())
     order_id = response.json()["_id"]
+    print("Order ID:", order_id)
 
     get_response = requests.get(f"{base_url}/orders/{order_id}", headers=auth_headers)
+    print("GET STATUS:", get_response.status_code)
+    print("GET BODY:", get_response.text)
     assert get_response.status_code == 200
     assert get_response.json()["_id"] == order_id
 
