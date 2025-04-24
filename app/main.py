@@ -12,8 +12,8 @@ app = FastAPI()
 
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://mongo:27017")
 client = AsyncIOMotorClient(MONGO_URI)
-db = client.oms  
-orders_collection = db.orders
+db = client.oms  # if oms DB doesn't exist yet, MongoDB will create it when you insert your first doc(BSON)
+orders_collection = db.orders #then, in the DB I created, we can have collections such as "orders"
 
 
 class Item(BaseModel):

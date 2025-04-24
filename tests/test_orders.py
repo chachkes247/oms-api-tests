@@ -8,7 +8,9 @@ def test_health_check(base_url):
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
     
+# CRUD:
 
+# Create (POST or PUT in HTTP)
 def test_create_order(base_url, auth_headers, test_order, mongo_client):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
     assert response.status_code == 201
@@ -18,7 +20,7 @@ def test_create_order(base_url, auth_headers, test_order, mongo_client):
     assert db_order is not None
     assert db_order["status"] == "Pending"
 
-
+# Read (GET in HTTP)
 def test_get_order(base_url, auth_headers, test_order, mongo_client):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
     print("CREATE STATUS:", response.status_code)
@@ -33,6 +35,7 @@ def test_get_order(base_url, auth_headers, test_order, mongo_client):
     assert get_response.json()["_id"] == order_id
 
 
+# Update (PUT to replace or PATCH to modify , in HTTP)
 @pytest.mark.parametrize("new_status", ["Processing", "Shipped", "Delivered"])
 def test_update_order_status(base_url, auth_headers, test_order, mongo_client, new_status):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
@@ -46,6 +49,7 @@ def test_update_order_status(base_url, auth_headers, test_order, mongo_client, n
     assert db_order["status"] == new_status
 
 
+# DELETE
 def test_delete_order(base_url, auth_headers, test_order, mongo_client):
     response = requests.post(f"{base_url}/orders", json=test_order, headers=auth_headers)
     order_id = response.json()["_id"]
@@ -56,6 +60,8 @@ def test_delete_order(base_url, auth_headers, test_order, mongo_client):
     db_order = mongo_client["oms"]["orders"].find_one({"_id": ObjectId(order_id)})
     assert db_order is None
 
+
+##
 
 @pytest.mark.skip(reason="Skipping to unblock pipeline")
 def test_update_nonexistent_order(base_url, auth_headers):
